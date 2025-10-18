@@ -398,6 +398,33 @@ const Index = () => {
           </Card>
         )}
 
+        {/* Ruleta de Retos Section */}
+        <Card className="p-8 bg-card border-3 border-primary/40 shadow-xl mb-8">
+          <div className="flex items-center gap-4 mb-8">
+            <div className="p-3 bg-destructive/20 rounded-2xl">
+              <Target className="h-8 w-8 text-destructive" />
+            </div>
+            <div>
+              <h3 className="text-2xl font-black text-foreground uppercase tracking-tight">Ruleta de Retos</h3>
+              <p className="text-sm text-muted-foreground font-bold mt-1 uppercase tracking-wide">Solo si Cristian no cumple</p>
+            </div>
+          </div>
+          
+          <div className="relative group">
+            <div className="relative text-center p-12 bg-background rounded-2xl border-2 border-destructive/30 hover:border-destructive/60 transition-all">
+              <div className="mb-6">
+                <Rocket className="h-24 w-24 text-destructive/40 mx-auto animate-pulse" />
+              </div>
+              <div className="inline-block px-8 py-3 bg-destructive/10 rounded-full border-2 border-destructive/30 mb-4">
+                <p className="text-2xl font-black text-destructive uppercase tracking-[0.3em]">COMING SOON</p>
+              </div>
+              <p className="text-base text-muted-foreground font-bold max-w-2xl mx-auto">
+                Aquí aparecerá el reto que le tocó al Cristian cada vez que no cumpla con su objetivo o si engorda más
+              </p>
+            </div>
+          </div>
+        </Card>
+
         {/* Chart Section */}
         <Card className="p-8 bg-card border-3 border-primary/40 shadow-xl mb-8">
           <div className="flex items-center gap-4 mb-8">
