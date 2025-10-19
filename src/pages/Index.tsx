@@ -398,6 +398,130 @@ const Index = () => {
           </Card>
         )}
 
+        {/* Weekly Weight Loss Rate Chart */}
+        <Card className="p-8 bg-card border-3 border-primary/40 shadow-xl mb-8">
+          <div className="flex items-center gap-4 mb-8">
+            <div className="p-3 bg-primary/20 rounded-2xl">
+              <TrendingDown className="h-8 w-8 text-primary" />
+            </div>
+            <h3 className="text-2xl font-black text-foreground uppercase tracking-tight">Tasa de Pérdida Semanal</h3>
+          </div>
+          
+          <div className="relative group">
+            <div className="relative p-8 bg-background rounded-2xl border-2 border-primary/30">
+              <div className="flex items-center justify-between mb-6">
+                <div>
+                  <p className="text-xs text-muted-foreground uppercase tracking-[0.3em] mb-2 font-black">Promedio Actual</p>
+                  <div className="flex items-baseline gap-3">
+                    <span className="text-6xl font-black text-primary">-{averages?.weeklyAverage}</span>
+                    <span className="text-2xl text-primary font-black">kg/semana</span>
+                  </div>
+                </div>
+                <Flame className="h-20 w-20 text-primary/30" />
+              </div>
+              
+              {/* Visual bar representation */}
+              <div className="space-y-3">
+                {[
+                  { week: 'Semana 1', loss: 0.9 },
+                  { week: 'Semana 2', loss: 1.0 },
+                  { week: 'Semana 3', loss: 0.5 },
+                  { week: 'Semana 4', loss: 1.0 }
+                ].map((item, idx) => (
+                  <div key={idx} className="flex items-center gap-4">
+                    <span className="text-xs font-black text-muted-foreground uppercase tracking-wider w-24">{item.week}</span>
+                    <div className="flex-1 h-8 bg-muted rounded-full overflow-hidden">
+                      <div 
+                        className="h-full bg-primary rounded-full flex items-center justify-end pr-3 transition-all duration-500"
+                        style={{ width: `${(item.loss / 1.5) * 100}%` }}
+                      >
+                        <span className="text-xs font-black text-background">-{item.loss} kg</span>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </Card>
+
+        {/* Goal Projection Section */}
+        {averages && (
+          <Card className="p-8 bg-card border-3 border-primary/40 shadow-xl mb-8">
+            <div className="flex items-center gap-4 mb-8">
+              <div className="p-3 bg-primary/20 rounded-2xl">
+                <Calendar className="h-8 w-8 text-primary animate-pulse" />
+              </div>
+              <h3 className="text-2xl font-black text-foreground uppercase tracking-tight">Proyección de Meta</h3>
+            </div>
+            
+            <div className="relative group">
+              <div className="relative text-center p-10 bg-gradient-to-br from-primary/10 via-primary/5 to-transparent rounded-2xl border-2 border-primary/40">
+                <Trophy className="h-16 w-16 text-primary mx-auto mb-6 animate-pulse" />
+                <p className="text-sm text-muted-foreground uppercase tracking-[0.3em] mb-4 font-black">Al ritmo actual alcanzará</p>
+                <div className="inline-block px-8 py-4 bg-primary/10 rounded-2xl border-2 border-primary/30 mb-6">
+                  <p className="text-5xl font-black text-primary mb-2">{goalWeight} kg</p>
+                  <div className="flex items-center justify-center gap-3">
+                    <Star className="h-5 w-5 text-primary fill-primary" />
+                    <p className="text-2xl font-black text-primary">
+                      {(() => {
+                        const currentWeightValue = weighings[weighings.length - 1].weight;
+                        const weightToLose = currentWeightValue - goalWeight;
+                        const weeklyRate = parseFloat(averages.weeklyAverage);
+                        const weeksNeeded = weightToLose / weeklyRate;
+                        const daysNeeded = Math.round(weeksNeeded * 7);
+                        
+                        const lastDate = new Date(weighings[weighings.length - 1].date);
+                        const projectedDate = new Date(lastDate);
+                        projectedDate.setDate(projectedDate.getDate() + daysNeeded);
+                        
+                        const months: { [key: number]: string } = {
+                          0: 'enero', 1: 'febrero', 2: 'marzo', 3: 'abril', 4: 'mayo', 5: 'junio',
+                          6: 'julio', 7: 'agosto', 8: 'septiembre', 9: 'octubre', 10: 'noviembre', 11: 'diciembre'
+                        };
+                        
+                        return `${projectedDate.getDate()} de ${months[projectedDate.getMonth()]} de ${projectedDate.getFullYear()}`;
+                      })()}
+                    </p>
+                    <Star className="h-5 w-5 text-primary fill-primary" />
+                  </div>
+                </div>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-8">
+                  <div className="p-4 bg-background rounded-xl border border-primary/20">
+                    <p className="text-xs text-muted-foreground uppercase tracking-wider mb-2 font-black">Días estimados</p>
+                    <p className="text-3xl font-black text-foreground">
+                      {(() => {
+                        const currentWeightValue = weighings[weighings.length - 1].weight;
+                        const weightToLose = currentWeightValue - goalWeight;
+                        const weeklyRate = parseFloat(averages.weeklyAverage);
+                        const weeksNeeded = weightToLose / weeklyRate;
+                        return Math.round(weeksNeeded * 7);
+                      })()}
+                    </p>
+                  </div>
+                  <div className="p-4 bg-background rounded-xl border border-primary/20">
+                    <p className="text-xs text-muted-foreground uppercase tracking-wider mb-2 font-black">Semanas restantes</p>
+                    <p className="text-3xl font-black text-foreground">
+                      {(() => {
+                        const currentWeightValue = weighings[weighings.length - 1].weight;
+                        const weightToLose = currentWeightValue - goalWeight;
+                        const weeklyRate = parseFloat(averages.weeklyAverage);
+                        return Math.round(weightToLose / weeklyRate);
+                      })()}
+                    </p>
+                  </div>
+                  <div className="p-4 bg-background rounded-xl border border-primary/20">
+                    <p className="text-xs text-muted-foreground uppercase tracking-wider mb-2 font-black">Kg por perder</p>
+                    <p className="text-3xl font-black text-primary">
+                      {(weighings[weighings.length - 1].weight - goalWeight).toFixed(1)}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </Card>
+        )}
+
         {/* Ruleta de Retos Section */}
         <Card className="p-8 bg-card border-3 border-primary/40 shadow-xl mb-8">
           <div className="flex items-center gap-4 mb-8">
