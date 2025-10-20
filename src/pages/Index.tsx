@@ -62,6 +62,11 @@ const Index = () => {
   const startDate = parseISO(initialDate);
   const daysInProject = differenceInDays(nowInChile, startDate);
   
+  // Debug logs
+  console.log('Fecha actual en Chile:', format(nowInChile, 'yyyy-MM-dd HH:mm:ss'));
+  console.log('Fecha de inicio:', initialDate);
+  console.log('Días transcurridos:', daysInProject);
+  
   const currentWeight = weighings[weighings.length - 1].weight;
   const weightLost = initialWeight - currentWeight;
   const progressPercentage = ((initialWeight - currentWeight) / (initialWeight - goalWeight) * 100).toFixed(1);
