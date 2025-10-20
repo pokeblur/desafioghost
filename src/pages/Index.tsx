@@ -3,6 +3,8 @@ import { Card } from '@/components/ui/card';
 import WeightChart from '@/components/WeightChart';
 import WeighingCard from '@/components/WeighingCard';
 import logoImage from '@/assets/proyecto-ghost-logo.png';
+import { differenceInDays, parseISO, addDays, format } from 'date-fns';
+import { toZonedTime } from 'date-fns-tz';
 
 const Index = () => {
   const initialWeight = 103.2;
@@ -54,10 +56,15 @@ const Index = () => {
     }
   ];
 
+  // Calcular fecha actual en zona horaria de Chile
+  const chileTimezone = 'America/Santiago';
+  const nowInChile = toZonedTime(new Date(), chileTimezone);
+  const startDate = parseISO(initialDate);
+  const daysInProject = differenceInDays(nowInChile, startDate);
+  
   const currentWeight = weighings[weighings.length - 1].weight;
   const weightLost = initialWeight - currentWeight;
   const progressPercentage = ((initialWeight - currentWeight) / (initialWeight - goalWeight) * 100).toFixed(1);
-  const daysInProject = 23; // Del 25 de septiembre al 17 de octubre
   
   const chartData = [
     { date: initialWeighing.date, weight: initialWeighing.weight },
@@ -81,8 +88,7 @@ const Index = () => {
   const calculateAverages = () => {
     if (weighings.length < 2) return null;
     
-    // Calcular días desde el inicio hasta el 17 de octubre (23 días totales)
-    const daysDiff = 23; // Del 25 de septiembre al 17 de octubre inclusive
+    const daysDiff = daysInProject;
     const weeksDiff = daysDiff / 7;
     
     const totalWeightLoss = initialWeight - weighings[weighings.length - 1].weight;
@@ -463,7 +469,7 @@ const Index = () => {
                   <p className="text-5xl font-black text-primary mb-2">{goalWeight} kg</p>
                   <div className="flex items-center justify-center gap-3">
                     <Star className="h-5 w-5 text-primary fill-primary" />
-                    <p className="text-2xl font-black text-primary">
+                  <p className="text-2xl font-black text-primary">
                       {(() => {
                         const currentWeightValue = weighings[weighings.length - 1].weight;
                         const weightToLose = currentWeightValue - goalWeight;
@@ -471,9 +477,7 @@ const Index = () => {
                         const weeksNeeded = weightToLose / weeklyRate;
                         const daysNeeded = Math.round(weeksNeeded * 7);
                         
-                        const lastDate = new Date(weighings[weighings.length - 1].date);
-                        const projectedDate = new Date(lastDate);
-                        projectedDate.setDate(projectedDate.getDate() + daysNeeded);
+                        const projectedDate = addDays(nowInChile, daysNeeded);
                         
                         const months: { [key: number]: string } = {
                           0: 'enero', 1: 'febrero', 2: 'marzo', 3: 'abril', 4: 'mayo', 5: 'junio',
