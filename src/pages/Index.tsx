@@ -9,10 +9,10 @@ import { toZonedTime } from 'date-fns-tz';
 const Index = () => {
   const initialWeight = 103.2;
   const goalWeight = 85.0;
-  const initialDate = '2025-09-24';
+  const initialDate = '2025-09-25';
   
   const initialWeighing = {
-    date: '2025-09-24',
+    date: '2025-09-25',
     weight: 103.2,
     isInitial: true
   };
