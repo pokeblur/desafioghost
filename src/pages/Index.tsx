@@ -9,17 +9,17 @@ import { toZonedTime } from 'date-fns-tz';
 const Index = () => {
   const initialWeight = 103.2;
   const goalWeight = 85.0;
-  const initialDate = '2025-09-25';
+  const initialDate = '2024-09-25';
   
   const initialWeighing = {
-    date: '2025-09-25',
+    date: '2024-09-25',
     weight: 103.2,
     isInitial: true
   };
 
   const weighings = [
     {
-      date: '2025-09-30',
+      date: '2024-09-30',
       weight: 102.3,
       bmi: 33.8,
       bodyFat: 34.3,
@@ -28,7 +28,7 @@ const Index = () => {
       bodyAge: 64
     },
     {
-      date: '2025-10-05',
+      date: '2024-10-05',
       weight: 101.3,
       bmi: 33.5,
       bodyFat: 36.9,
@@ -37,7 +37,7 @@ const Index = () => {
       bodyAge: 64
     },
     {
-      date: '2025-10-10',
+      date: '2024-10-10',
       weight: 100.8,
       bmi: 33.3,
       bodyFat: 36.7,
@@ -46,7 +46,7 @@ const Index = () => {
       bodyAge: 64
     },
     {
-      date: '2025-10-15',
+      date: '2024-10-15',
       weight: 99.8,
       bmi: 33,
       bodyFat: 36.6,
