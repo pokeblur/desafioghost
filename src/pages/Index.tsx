@@ -426,26 +426,38 @@ const Index = () => {
                 <Flame className="h-20 w-20 text-primary/30" />
               </div>
               
-              {/* Visual bar representation */}
+              {/* Visual bar representation - Dynamic weeks */}
               <div className="space-y-3">
-                {[
-                  { week: 'Semana 1', loss: 0.9 },
-                  { week: 'Semana 2', loss: 1.0 },
-                  { week: 'Semana 3', loss: 0.5 },
-                  { week: 'Semana 4', loss: 1.0 }
-                ].map((item, idx) => (
-                  <div key={idx} className="flex items-center gap-4">
-                    <span className="text-xs font-black text-muted-foreground uppercase tracking-wider w-24">{item.week}</span>
-                    <div className="flex-1 h-8 bg-muted rounded-full overflow-hidden">
-                      <div 
-                        className="h-full bg-primary rounded-full flex items-center justify-end pr-3 transition-all duration-500"
-                        style={{ width: `${(item.loss / 1.5) * 100}%` }}
-                      >
-                        <span className="text-xs font-black text-background">-{item.loss} kg</span>
+                {(() => {
+                  const weeklyData = [];
+                  let prevWeight = initialWeight;
+                  
+                  for (let i = 0; i < weighings.length; i++) {
+                    const weighing = weighings[i];
+                    const loss = prevWeight - weighing.weight;
+                    weeklyData.push({
+                      week: `Semana ${i + 1}`,
+                      loss: loss
+                    });
+                    prevWeight = weighing.weight;
+                  }
+                  
+                  const maxLoss = Math.max(...weeklyData.map(w => w.loss), 1.5);
+                  
+                  return weeklyData.map((item, idx) => (
+                    <div key={idx} className="flex items-center gap-4">
+                      <span className="text-xs font-black text-muted-foreground uppercase tracking-wider w-24">{item.week}</span>
+                      <div className="flex-1 h-8 bg-muted rounded-full overflow-hidden">
+                        <div 
+                          className="h-full bg-primary rounded-full flex items-center justify-end pr-3 transition-all duration-500"
+                          style={{ width: `${(item.loss / maxLoss) * 100}%` }}
+                        >
+                          <span className="text-xs font-black text-background">-{item.loss.toFixed(1)} kg</span>
+                        </div>
                       </div>
                     </div>
-                  </div>
-                ))}
+                  ));
+                })()}
               </div>
             </div>
           </div>
