@@ -56,9 +56,9 @@ const Index = () => {
     },
     {
       date: '2025-10-20',
-      weight: 96.4,
-      bmi: 22.8,
-      bodyFat: 36.01,
+      weight: 99.4,
+      bmi: 32.8,
+      bodyFat: 36.1,
       muscle: 30.8,
       visceralFat: 14,
       bodyAge: 63
